@@ -14,11 +14,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Scroller;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     int[] imageids = new int[4];
+    int balance = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +30,10 @@ public class MainActivity extends AppCompatActivity {
         imageids[1] = R.mipmap.diamonds;
         imageids[2] = R.mipmap.hearts;
         imageids[3] = R.mipmap.spades;
-        vibrate();
         initialSliders();
-
+        loadImages();
+        TextView balanceview = findViewById(R.id.txtBalance);
+        balanceview.setText("" +balance);
     }
 
     private void loadImages(){
@@ -84,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
     public int getMulit(){
         int multi=0;
 
-        ImageView image1 = null;
-        ImageView image2 = null;
-        ImageView image3 =null;
+        ImageView image1 = findViewById(R.id.image1);
+        ImageView image2 = findViewById(R.id.image2);
+        ImageView image3 = findViewById(R.id.image3);
 
         ViewPager slider1=(ViewPager) findViewById(R.id.slider1);
         ViewPager slider2=(ViewPager) findViewById(R.id.slider2);
@@ -115,6 +118,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void GuessClicked(View view) {
         loadImages();
-        getMulit();
+        TextView txtguess = findViewById(R.id.txtGuess);
+        int guess = Integer.parseInt(txtguess.getText().toString());
+
+        guess = guess * getMulit();
+        balance = balance + guess;
     }
 }
