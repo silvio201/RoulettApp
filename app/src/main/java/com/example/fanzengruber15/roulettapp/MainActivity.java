@@ -27,11 +27,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        vibrate();
         initialSliders();
-        loadImages();
+        resetImages();
         TextView balanceview = findViewById(R.id.txtBalance);
         balanceview.setText("" +balance);
+    }
+
+    private void resetImages(){
+        ImageView image1 = findViewById(R.id.image1);
+        ImageView image2 = findViewById(R.id.image2);
+        ImageView image3 = findViewById(R.id.image3);
+
+        image1.setImageResource(R.mipmap.card);
+        image2.setImageResource(R.mipmap.card);
+        image3.setImageResource(R.mipmap.card);
     }
 
     private void loadImages(){
@@ -58,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
         ViewPager slider1=(ViewPager) findViewById(R.id.slider1);
         ViewPager slider2=(ViewPager) findViewById(R.id.slider2);
         ViewPager slider3=(ViewPager) findViewById(R.id.slider3);
-
-
 
         ImageAdapter adapterView1 = new ImageAdapter(this, new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades});
         ImageAdapter adapterView2 = new ImageAdapter(this, new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades});
@@ -93,25 +100,19 @@ public class MainActivity extends AppCompatActivity {
         ViewPager slider2=(ViewPager) findViewById(R.id.slider2);
         ViewPager slider3=(ViewPager) findViewById(R.id.slider3);
 
-        if(slider1.getCurrentItem() == image1.getTag()){
+        if(slider1.getCurrentItem() == (int) image1.getTag()){
             multi++;
-        }else{
-            multi--;
         }
 
-        if(slider2.getCurrentItem() == image2.getTag()){
+        if(slider2.getCurrentItem() == (int) image2.getTag()){
             multi++;
-        }else{
-            multi--;
         }
 
-        if(slider3.getCurrentItem() == image3.getTag()){
+        if(slider3.getCurrentItem() == (int) image3.getTag()){
             multi++;
-        }else{
-            multi--;
         }
 
-        if(multi == -3) multi=-1;
+        if(multi == 0) return -1;
 
         return multi;
     }
@@ -123,5 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
         guess = guess * getMulit();
         balance = balance + guess;
+
     }
 }
