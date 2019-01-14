@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         resetImages();
         TextView balanceview = findViewById(R.id.txtBalance);
         balanceview.setText("" +balance);
+        ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
         streak=0;
     }
 
@@ -139,13 +140,14 @@ public class MainActivity extends AppCompatActivity {
             int multi = getMulit();
 
             if(multi == 1){
+                vibrate();
                 Toast t = Toast.makeText(this, "No win, no Lose!", Toast.LENGTH_SHORT);
                 t.show();
                 TextView txtbalance = findViewById(R.id.txtBalance);
                 txtbalance.setBackgroundColor(Color.WHITE);
             }else if(multi == -1){
                 streak=0;
-                ((TextView)findViewById(R.id.txtViewStreak)).setText(""+streak);
+                ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
 
                 Toast t = Toast.makeText(this, "You lost " +guess+"!", Toast.LENGTH_SHORT);
                 t.show();
@@ -154,8 +156,11 @@ public class MainActivity extends AppCompatActivity {
                 txtbalance.setText("" + balance);
                 txtbalance.setBackgroundColor(Color.RED);
             }else if(multi == 2){
+                vibrate();
+                vibrate();
+
                 streak++;
-                ((TextView)findViewById(R.id.txtViewStreak)).setText(""+streak);
+                ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
 
                 Toast t = Toast.makeText(this, "You won " +guess*getStreakBonus()+"!", Toast.LENGTH_SHORT);
                 t.show();
@@ -164,8 +169,12 @@ public class MainActivity extends AppCompatActivity {
                 txtbalance.setText("" + balance);
                 txtbalance.setBackgroundColor(Color.GREEN);
             }else if(multi == 3){
+                vibrate();
+                vibrate();
+                vibrate();
+
                 streak++;
-                ((TextView)findViewById(R.id.txtViewStreak)).setText(""+streak);
+                ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
 
                 Toast t = Toast.makeText(this, "You won " +guess*2*getStreakBonus()+"!", Toast.LENGTH_SHORT);
                 t.show();
@@ -175,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                 txtbalance.setBackgroundColor(Color.GREEN);
             }
             FewResult result=new FewResult(this);
-            vibrate();
             result.execute();
         }
     }
