@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        vibrate();
         initialSliders();
         loadImages();
         TextView balanceview = findViewById(R.id.txtBalance);
@@ -126,11 +125,9 @@ public class MainActivity extends AppCompatActivity {
         TextView txtguess = findViewById(R.id.txtGuess);
         int guess = Integer.parseInt(txtguess.getText().toString());
 
-        guess = guess * getMulit();
-        balance = balance + guess;
-
         if (balance - guess < 0){
-            Toast.makeText(this, "Not enough Balance", Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(this, "Not enough Balance", Toast.LENGTH_SHORT);
+            t.show();
         }else {
             int oldguess = guess;
             guess = guess * getMulit();
@@ -138,12 +135,16 @@ public class MainActivity extends AppCompatActivity {
             TextView txtbalance = findViewById(R.id.txtBalance);
             txtbalance.setText("" + balance);
             if(guess == oldguess){
-                Toast.makeText(this, "No win, no Lose!", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(this, "No win, no Lose!", Toast.LENGTH_SHORT);
+                t.show();
             }else if(guess < oldguess){
-                Toast.makeText(this, "You lost " +oldguess+"!", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(this, "You lost " +oldguess+"!", Toast.LENGTH_SHORT);
+                t.show();
             }else if(guess > oldguess){
-                Toast.makeText(this, "You won " +oldguess+"!", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(this, "You won " +oldguess+"!", Toast.LENGTH_SHORT);
+                t.show();
             }
+
         }
     }
 }
