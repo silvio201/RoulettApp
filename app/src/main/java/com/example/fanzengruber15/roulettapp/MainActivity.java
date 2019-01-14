@@ -28,9 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        vibrate();
         initialSliders();
-        loadImages();
+        resetImages();
         TextView balanceview = findViewById(R.id.txtBalance);
         balanceview.setText("" +balance);
     }
@@ -70,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
         ViewPager slider2=(ViewPager) findViewById(R.id.slider2);
         ViewPager slider3=(ViewPager) findViewById(R.id.slider3);
 
-
-
         ImageAdapter adapterView1 = new ImageAdapter(this, new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades});
         ImageAdapter adapterView2 = new ImageAdapter(this, new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades});
         ImageAdapter adapterView3 = new ImageAdapter(this, new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades});
@@ -104,15 +101,15 @@ public class MainActivity extends AppCompatActivity {
         ViewPager slider2=(ViewPager) findViewById(R.id.slider2);
         ViewPager slider3=(ViewPager) findViewById(R.id.slider3);
 
-        if(slider1.getCurrentItem() == (int) image1.getTag()){
+        if(((ImageAdapter)slider1.getAdapter()).getPosition() == (int) image1.getTag()){
             multi++;
         }
 
-        if(slider2.getCurrentItem() == (int) image2.getTag()){
+        if(((ImageAdapter)slider2.getAdapter()).getPosition() == (int) image2.getTag()){
             multi++;
         }
 
-        if(slider3.getCurrentItem() == (int) image3.getTag()){
+        if(((ImageAdapter)slider3.getAdapter()).getPosition() == (int) image3.getTag()){
             multi++;
         }
 

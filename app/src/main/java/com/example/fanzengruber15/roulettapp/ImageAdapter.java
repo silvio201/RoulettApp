@@ -17,8 +17,6 @@ public class ImageAdapter extends PagerAdapter {
         this.sliderImageId = images;
     }
 
-
-
     @Override
     public int getCount() {
         return sliderImageId.length;
@@ -47,6 +45,9 @@ public class ImageAdapter extends PagerAdapter {
         return view == ((ImageView) o);
     }
 
+    public int getPosition(){
+        return position;
+    }
 
 
 
