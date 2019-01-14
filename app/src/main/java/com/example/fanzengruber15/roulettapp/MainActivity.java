@@ -15,14 +15,42 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Scroller;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+    int[] imageids = new int[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        imageids[0] = R.mipmap.clubs;
+        imageids[1] = R.mipmap.diamonds;
+        imageids[2] = R.mipmap.hearts;
+        imageids[3] = R.mipmap.spades;
         vibrate();
         initialSliders();
+
+    }
+
+    private void loadImages(){
+        ImageView image1 = findViewById(R.id.image1);
+        ImageView image2 = findViewById(R.id.image2);
+        ImageView image3 = findViewById(R.id.image3);
+        for(int i = 0; i < 3; i++){
+            int generated = (int)(Math.random() * 3);
+            switch(i){
+                case 0: image1.setImageResource(imageids[generated]);
+                        image1.setTag(imageids[generated]);
+                        break;
+                case 1: image2.setImageResource(imageids[generated]);
+                        image2.setTag(imageids[generated]);
+                        break;
+                case 2: image3.setImageResource(imageids[generated]);
+                        image3.setTag(imageids[generated]);
+                        break;
+            }
+        }
     }
 
     private void initialSliders() {
@@ -86,5 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void GuessClicked(View view) {
+        loadImages();
+        getMulit();
     }
 }
