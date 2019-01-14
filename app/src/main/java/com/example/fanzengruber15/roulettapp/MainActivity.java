@@ -15,9 +15,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Scroller;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     int [] imagesSlider = new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades};
+    int balance = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         vibrate();
         initialSliders();
+        loadImages();
+        TextView balanceview = findViewById(R.id.txtBalance);
+        balanceview.setText("" +balance);
+    }
+
+    private void loadImages(){
+        ImageView image1 = findViewById(R.id.image1);
+        ImageView image2 = findViewById(R.id.image2);
+        ImageView image3 = findViewById(R.id.image3);
+        for(int i = 0; i < 3; i++){
+            int generated = (int)(Math.random() * 3);
+            switch(i){
+                case 0: image1.setImageResource(imagesSlider[generated]);
+                        image1.setTag(imagesSlider[generated]);
+                        break;
+                case 1: image2.setImageResource(imagesSlider[generated]);
+                        image2.setTag(imagesSlider[generated]);
+                        break;
+                case 2: image3.setImageResource(imagesSlider[generated]);
+                        image3.setTag(imagesSlider[generated]);
+                        break;
+            }
+        }
     }
 
     private void initialSliders() {
@@ -34,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ImageAdapter adapterView1 = new ImageAdapter(this, imagesSlider);
-        ImageAdapter adapterView2 = new ImageAdapter(this, imagesSlider);
-        ImageAdapter adapterView3 = new ImageAdapter(this, imagesSlider);
+        ImageAdapter adapterView1 = new ImageAdapter(this, new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades});
+        ImageAdapter adapterView2 = new ImageAdapter(this, new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades});
+        ImageAdapter adapterView3 = new ImageAdapter(this, new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades});
 
         slider1.setAdapter(adapterView1);
         slider2.setAdapter(adapterView2);
@@ -61,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView image1 = findViewById(R.id.image1);
         ImageView image2 = findViewById(R.id.image2);
         ImageView image3 = findViewById(R.id.image3);
-
 
         ViewPager slider1=(ViewPager) findViewById(R.id.slider1);
         ViewPager slider2=(ViewPager) findViewById(R.id.slider2);
@@ -91,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void GuessClicked(View view) {
+        loadImages();
+        TextView txtguess = findViewById(R.id.txtGuess);
+        int guess = Integer.parseInt(txtguess.getText().toString());
 
+        guess = guess * getMulit();
+        balance = balance + guess;
     }
 }
