@@ -127,20 +127,29 @@ public class MainActivity extends AppCompatActivity {
             Toast t = Toast.makeText(this, "Not enough Balance", Toast.LENGTH_SHORT);
             t.show();
         }else {
-            int oldguess = guess;
-            guess = guess * getMulit();
-            balance = balance + guess;
-            TextView txtbalance = findViewById(R.id.txtBalance);
-            txtbalance.setText("" + balance);
-            if(guess == oldguess){
+            int multi = getMulit();
+
+            if(multi == 1){
                 Toast t = Toast.makeText(this, "No win, no Lose!", Toast.LENGTH_SHORT);
                 t.show();
-            }else if(guess < oldguess){
-                Toast t = Toast.makeText(this, "You lost " +oldguess+"!", Toast.LENGTH_SHORT);
+            }else if(multi == -1){
+                Toast t = Toast.makeText(this, "You lost " +guess+"!", Toast.LENGTH_SHORT);
                 t.show();
-            }else if(guess > oldguess){
-                Toast t = Toast.makeText(this, "You won " +oldguess+"!", Toast.LENGTH_SHORT);
+                balance = balance - guess;
+                TextView txtbalance = findViewById(R.id.txtBalance);
+                txtbalance.setText("" + balance);
+            }else if(multi == 2){
+                Toast t = Toast.makeText(this, "You won " +guess+"!", Toast.LENGTH_SHORT);
                 t.show();
+                balance = balance + guess;
+                TextView txtbalance = findViewById(R.id.txtBalance);
+                txtbalance.setText("" + balance);
+            }else if(multi == 3){
+                Toast t = Toast.makeText(this, "You won " +guess*2+"!", Toast.LENGTH_SHORT);
+                t.show();
+                balance = balance + (guess * 2);
+                TextView txtbalance = findViewById(R.id.txtBalance);
+                txtbalance.setText("" + balance);
             }
 
         }
