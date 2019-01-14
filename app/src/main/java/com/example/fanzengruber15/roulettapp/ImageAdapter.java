@@ -32,6 +32,7 @@ public class ImageAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        this.position = position;
         ImageView imageView = new ImageView(mainActivity_Context);
         imageView.setImageResource(sliderImageId[position]);
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -45,7 +46,6 @@ public class ImageAdapter extends PagerAdapter {
     public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
         return view == ((ImageView) o);
     }
-
 
 
 
