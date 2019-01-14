@@ -1,21 +1,16 @@
 package com.example.fanzengruber15.roulettapp;
 
 import android.content.Context;
-import android.graphics.Path;
-import android.icu.text.RelativeDateTimeFormatter;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.text.Layout;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ScrollView;
-import android.widget.Scroller;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        vibrate();
         initialSliders();
         loadImages();
         TextView balanceview = findViewById(R.id.txtBalance);
@@ -93,19 +87,19 @@ public class MainActivity extends AppCompatActivity {
         ViewPager slider2=(ViewPager) findViewById(R.id.slider2);
         ViewPager slider3=(ViewPager) findViewById(R.id.slider3);
 
-        if(slider1.getCurrentItem() == image1.getTag()){
+        if(slider1.getCurrentItem() == (int) image1.getTag()){
             multi++;
         }else{
             multi--;
         }
 
-        if(slider2.getCurrentItem() == image2.getTag()){
+        if(slider2.getCurrentItem() == (int) image2.getTag()){
             multi++;
         }else{
             multi--;
         }
 
-        if(slider3.getCurrentItem() == image3.getTag()){
+        if(slider3.getCurrentItem() == (int) image3.getTag()){
             multi++;
         }else{
             multi--;
@@ -120,8 +114,21 @@ public class MainActivity extends AppCompatActivity {
         loadImages();
         TextView txtguess = findViewById(R.id.txtGuess);
         int guess = Integer.parseInt(txtguess.getText().toString());
-
-        guess = guess * getMulit();
-        balance = balance + guess;
+        if (balance - guess < 0){
+            Toast.makeText(this, "Not enough Balance", Toast.LENGTH_SHORT);
+        }else {
+            int oldguess = guess;
+            guess = guess * getMulit();
+            balance = balance + guess;
+            TextView txtbalance = findViewById(R.id.txtBalance);
+            txtbalance.setText("" + balance);
+            if(guess == oldguess){
+                Toast.makeText(this, "No win, no Lose!", Toast.LENGTH_SHORT);
+            }else if(guess < oldguess){
+                Toast.makeText(this, "You lost " +oldguess+"!", Toast.LENGTH_SHORT);
+            }else if(guess > oldguess){
+                Toast.makeText(this, "You won " +oldguess+"!", Toast.LENGTH_SHORT);
+            }
+        }
     }
 }
