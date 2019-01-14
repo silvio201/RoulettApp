@@ -45,10 +45,5 @@ public class ImageAdapter extends PagerAdapter {
         return view == ((ImageView) o);
     }
 
-    public int getPosition(){
-        return position;
-    }
-
-
 
 }
