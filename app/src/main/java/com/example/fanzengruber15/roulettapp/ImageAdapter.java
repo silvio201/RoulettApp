@@ -10,7 +10,7 @@ import android.widget.ImageView;
 public class ImageAdapter extends PagerAdapter {
     Context mainActivity_Context;
     private int[] sliderImageId;
-
+    int position;
 
     public ImageAdapter(Context mContext, int [] images) {
         this.mainActivity_Context = mContext;
@@ -19,6 +19,9 @@ public class ImageAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
+        if(position==sliderImageId.length-1){
+
+        }
         return sliderImageId.length;
     }
 
@@ -34,6 +37,8 @@ public class ImageAdapter extends PagerAdapter {
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         imageView.setImageResource(sliderImageId[position]);
         ((ViewPager) container).addView(imageView, 0);
+        this.position=position;
+
         return imageView;
     }
 
@@ -41,4 +46,9 @@ public class ImageAdapter extends PagerAdapter {
     public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
         return view == ((ImageView) o);
     }
+
+
+
+
+
 }
