@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Scroller;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        vibrate();
         initialSliders();
-        resetImages();
+        loadImages();
         TextView balanceview = findViewById(R.id.txtBalance);
         balanceview.setText("" +balance);
     }
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         ViewPager slider1=(ViewPager) findViewById(R.id.slider1);
         ViewPager slider2=(ViewPager) findViewById(R.id.slider2);
         ViewPager slider3=(ViewPager) findViewById(R.id.slider3);
+
+
 
         ImageAdapter adapterView1 = new ImageAdapter(this, new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades});
         ImageAdapter adapterView2 = new ImageAdapter(this, new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades});
@@ -125,5 +129,21 @@ public class MainActivity extends AppCompatActivity {
         guess = guess * getMulit();
         balance = balance + guess;
 
+        if (balance - guess < 0){
+            Toast.makeText(this, "Not enough Balance", Toast.LENGTH_SHORT);
+        }else {
+            int oldguess = guess;
+            guess = guess * getMulit();
+            balance = balance + guess;
+            TextView txtbalance = findViewById(R.id.txtBalance);
+            txtbalance.setText("" + balance);
+            if(guess == oldguess){
+                Toast.makeText(this, "No win, no Lose!", Toast.LENGTH_SHORT);
+            }else if(guess < oldguess){
+                Toast.makeText(this, "You lost " +oldguess+"!", Toast.LENGTH_SHORT);
+            }else if(guess > oldguess){
+                Toast.makeText(this, "You won " +oldguess+"!", Toast.LENGTH_SHORT);
+            }
+        }
     }
 }
