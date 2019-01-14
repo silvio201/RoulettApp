@@ -8,20 +8,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 public class ImageAdapter extends PagerAdapter {
-    Context mainActivity_Context;
+    MainActivity mainActivity_Context;
     private int[] sliderImageId;
     int position;
 
-    public ImageAdapter(Context mContext, int [] images) {
+    public ImageAdapter(MainActivity mContext, int [] images) {
         this.mainActivity_Context = mContext;
         this.sliderImageId = images;
     }
 
+
+
     @Override
     public int getCount() {
-        if(position==sliderImageId.length-1){
-
-        }
         return sliderImageId.length;
     }
 
@@ -34,10 +33,10 @@ public class ImageAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView = new ImageView(mainActivity_Context);
-        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         imageView.setImageResource(sliderImageId[position]);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ((ViewPager) container).addView(imageView, 0);
-        this.position=position;
+
 
         return imageView;
     }
