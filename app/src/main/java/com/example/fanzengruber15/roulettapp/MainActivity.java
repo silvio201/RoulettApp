@@ -144,12 +144,14 @@ public class MainActivity extends AppCompatActivity {
                 balance = balance + guess;
                 TextView txtbalance = findViewById(R.id.txtBalance);
                 txtbalance.setText("" + balance);
+                vibrate();
             }else if(multi == 3){
                 Toast t = Toast.makeText(this, "You won " +guess*2+"!", Toast.LENGTH_SHORT);
                 t.show();
                 balance = balance + (guess * 2);
                 TextView txtbalance = findViewById(R.id.txtBalance);
                 txtbalance.setText("" + balance);
+                vibrate();
             }
 
         }
