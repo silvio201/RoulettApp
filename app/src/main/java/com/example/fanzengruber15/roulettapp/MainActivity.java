@@ -1,8 +1,10 @@
 package com.example.fanzengruber15.roulettapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.icu.text.RelativeDateTimeFormatter;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.support.v4.view.ViewPager;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     int [] imagesSlider = new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades};
     int balance = 10000;
+    int streak;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +35,11 @@ public class MainActivity extends AppCompatActivity {
         resetImages();
         TextView balanceview = findViewById(R.id.txtBalance);
         balanceview.setText("" +balance);
+        ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
+        streak=0;
     }
 
-    private void resetImages(){
+    public void resetImages(){
         ImageView image1 = findViewById(R.id.image1);
         ImageView image2 = findViewById(R.id.image2);
         ImageView image3 = findViewById(R.id.image3);
@@ -49,7 +54,11 @@ public class MainActivity extends AppCompatActivity {
         ImageView image2 = findViewById(R.id.image2);
         ImageView image3 = findViewById(R.id.image3);
         for(int i = 0; i < 3; i++){
-            int generated = (int)(Math.random() * 3);
+            int generated=imagesSlider.length;
+            while(generated>=imagesSlider.length || generated<0) {
+                generated=(int) (Math.random() * 5);
+            }
+
             switch(i){
                 case 0: image1.setImageResource(imagesSlider[generated]);
                         image1.setTag(imagesSlider[generated]);
@@ -119,41 +128,70 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void GuessClicked(View view) {
-        loadImages();
         TextView txtguess = findViewById(R.id.txtGuess);
         int guess = Integer.parseInt(txtguess.getText().toString());
 
         if (balance - guess < 0){
             Toast t = Toast.makeText(this, "Not enough Balance", Toast.LENGTH_SHORT);
             t.show();
+
         }else {
+            loadImages();
             int multi = getMulit();
 
             if(multi == 1){
+                vibrate();
                 Toast t = Toast.makeText(this, "No win, no Lose!", Toast.LENGTH_SHORT);
                 t.show();
+                TextView txtbalance = findViewById(R.id.txtBalance);
+                txtbalance.setBackgroundColor(Color.WHITE);
             }else if(multi == -1){
+                streak=0;
+                ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
+
                 Toast t = Toast.makeText(this, "You lost " +guess+"!", Toast.LENGTH_SHORT);
                 t.show();
                 balance = balance - guess;
                 TextView txtbalance = findViewById(R.id.txtBalance);
                 txtbalance.setText("" + balance);
+                txtbalance.setBackgroundColor(Color.RED);
             }else if(multi == 2){
-                Toast t = Toast.makeText(this, "You won " +guess+"!", Toast.LENGTH_SHORT);
+                vibrate();
+                vibrate();
+
+                streak++;
+                ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
+
+                Toast t = Toast.makeText(this, "You won " +guess*getStreakBonus()+"!", Toast.LENGTH_SHORT);
                 t.show();
-                balance = balance + guess;
+                balance = balance + guess * getStreakBonus();
                 TextView txtbalance = findViewById(R.id.txtBalance);
                 txtbalance.setText("" + balance);
+                txtbalance.setBackgroundColor(Color.GREEN);
                 vibrate();
             }else if(multi == 3){
-                Toast t = Toast.makeText(this, "You won " +guess*2+"!", Toast.LENGTH_SHORT);
+                vibrate();
+                vibrate();
+                vibrate();
+
+                streak++;
+                ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
+
+                Toast t = Toast.makeText(this, "You won " +guess*2*getStreakBonus()+"!", Toast.LENGTH_SHORT);
                 t.show();
-                balance = balance + (guess * 2);
+                balance = balance + (guess * 2) * getStreakBonus();
                 TextView txtbalance = findViewById(R.id.txtBalance);
                 txtbalance.setText("" + balance);
+                txtbalance.setBackgroundColor(Color.GREEN);
                 vibrate();
             }
-
+            FewResult result=new FewResult(this);
+            result.execute();
         }
+    }
+
+    private int getStreakBonus() {
+        if(streak > 3) return streak*2;
+        return streak+1;
     }
 }
