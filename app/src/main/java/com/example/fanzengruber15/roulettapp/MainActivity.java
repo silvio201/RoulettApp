@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 TextView txtbalance = findViewById(R.id.txtBalance);
                 txtbalance.setText("" + balance);
                 txtbalance.setBackgroundColor(Color.GREEN);
+                vibrate();
             }else if(multi == 3){
                 vibrate();
                 vibrate();
@@ -194,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 TextView txtbalance = findViewById(R.id.txtBalance);
                 txtbalance.setText("" + balance);
                 txtbalance.setBackgroundColor(Color.GREEN);
+                vibrate();
             }
             FewResult result=new FewResult(this);
             result.execute();
