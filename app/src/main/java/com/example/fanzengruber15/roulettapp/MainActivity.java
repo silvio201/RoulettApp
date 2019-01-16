@@ -3,6 +3,10 @@ package com.example.fanzengruber15.roulettapp;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Path;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.icu.text.RelativeDateTimeFormatter;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,10 +26,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
     int [] imagesSlider = new int[]{R.mipmap.clubs, R.mipmap.diamonds, R.mipmap.hearts, R.mipmap.spades};
     int balance = 10000;
     int streak;
+    float previousLigth=200;
+    boolean guessClickedWorking=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
         balanceview.setText("" +balance);
         ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
         streak=0;
+
+        //SENSORS
+        SensorManager manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor ligth=manager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        manager.registerListener(MainActivity.this, ligth, manager.SENSOR_DELAY_NORMAL);
     }
 
     public void resetImages(){
@@ -128,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void GuessClicked(View view) {
+        guessClickedWorking=true;
         TextView txtguess = findViewById(R.id.txtGuess);
         int guess = Integer.parseInt(txtguess.getText().toString());
 
@@ -191,5 +203,36 @@ public class MainActivity extends AppCompatActivity {
     private int getStreakBonus() {
         if(streak > 3) return streak*2;
         return streak+1;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        Sensor sensor = event.sensor;
+        if(sensor.getType() == sensor.TYPE_LIGHT){
+            float ligth=event.values[0];
+
+            if(previousLigth < 3 && ligth > 5) {
+                        if(guessClickedWorking==false){
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            GuessClicked(null);
+                            Log.d("tagme", "Auswertung");
+                        }
+                }
+            Log.d("tagme", "Ligth "+previousLigth +" ---> "+ligth);
+            previousLigth=ligth;
+        }
+
+        }
+
+
+
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

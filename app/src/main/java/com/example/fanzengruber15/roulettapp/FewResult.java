@@ -37,5 +37,6 @@ public class FewResult extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         mainActivity.findViewById(R.id.buttonGuess).setEnabled(true);
+        mainActivity.guessClickedWorking=false;
     }
 }
