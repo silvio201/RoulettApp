@@ -139,68 +139,71 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void GuessClicked(View view) {
-        guessClickedWorking=true;
-        TextView txtguess = findViewById(R.id.txtGuess);
-        int guess = Integer.parseInt(txtguess.getText().toString());
+        try{
+            guessClickedWorking=true;
+            TextView txtguess = findViewById(R.id.txtGuess);
+            int guess = Integer.parseInt(txtguess.getText().toString());
 
-        if (balance - guess < 0){
-            Toast t = Toast.makeText(this, "Not enough Balance", Toast.LENGTH_SHORT);
-            t.show();
-
-        }else {
-            loadImages();
-            int multi = getMulit();
-
-            if(multi == 1){
-                vibrate();
-                Toast t = Toast.makeText(this, "No win, no Lose!", Toast.LENGTH_SHORT);
+            if (balance - guess < 0){
+                Toast t = Toast.makeText(this, "Not enough Balance", Toast.LENGTH_SHORT);
                 t.show();
-                TextView txtbalance = findViewById(R.id.txtBalance);
-                txtbalance.setBackgroundColor(Color.WHITE);
-            }else if(multi == -1){
-                streak=0;
-                ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
 
-                Toast t = Toast.makeText(this, "You lost " +guess+"!", Toast.LENGTH_SHORT);
-                t.show();
-                balance = balance - guess;
-                TextView txtbalance = findViewById(R.id.txtBalance);
-                txtbalance.setText("" + balance);
-                txtbalance.setBackgroundColor(Color.RED);
-            }else if(multi == 2){
-                vibrate();
-                vibrate();
+            }else {
+                loadImages();
+                int multi = getMulit();
 
-                streak++;
-                ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
+                if (multi == 1) {
+                    vibrate();
+                    Toast t = Toast.makeText(this, "No win, no Lose!", Toast.LENGTH_SHORT);
+                    t.show();
+                    TextView txtbalance = findViewById(R.id.txtBalance);
+                    txtbalance.setBackgroundColor(Color.WHITE);
+                } else if (multi == -1) {
+                    streak = 0;
+                    ((TextView) findViewById(R.id.txtViewStreak)).setText("Streak: " + streak);
 
-                Toast t = Toast.makeText(this, "You won " +guess*getStreakBonus()+"!", Toast.LENGTH_SHORT);
-                t.show();
-                balance = balance + guess * getStreakBonus();
-                TextView txtbalance = findViewById(R.id.txtBalance);
-                txtbalance.setText("" + balance);
-                txtbalance.setBackgroundColor(Color.GREEN);
-                vibrate();
-            }else if(multi == 3){
-                vibrate();
-                vibrate();
-                vibrate();
+                    Toast t = Toast.makeText(this, "You lost " + guess + "!", Toast.LENGTH_SHORT);
+                    t.show();
+                    balance = balance - guess;
+                    TextView txtbalance = findViewById(R.id.txtBalance);
+                    txtbalance.setText("" + balance);
+                    txtbalance.setBackgroundColor(Color.RED);
+                } else if (multi == 2) {
+                    streak++;
+                    ((TextView) findViewById(R.id.txtViewStreak)).setText("Streak: " + streak);
 
-                streak++;
-                ((TextView)findViewById(R.id.txtViewStreak)).setText("Streak: "+streak);
+                    Toast t = Toast.makeText(this, "You won " + guess * getStreakBonus() + "!", Toast.LENGTH_SHORT);
+                    t.show();
+                    balance = balance + guess * getStreakBonus();
+                    TextView txtbalance = findViewById(R.id.txtBalance);
+                    txtbalance.setText("" + balance);
+                    txtbalance.setBackgroundColor(Color.GREEN);
+                    vibrate();
+                } else if (multi == 3) {
 
-                Toast t = Toast.makeText(this, "You won " +guess*2*getStreakBonus()+"!", Toast.LENGTH_SHORT);
-                t.show();
-                balance = balance + (guess * 2) * getStreakBonus();
-                TextView txtbalance = findViewById(R.id.txtBalance);
-                txtbalance.setText("" + balance);
-                txtbalance.setBackgroundColor(Color.GREEN);
-                vibrate();
+                    streak++;
+                    ((TextView) findViewById(R.id.txtViewStreak)).setText("Streak: " + streak);
+
+                    Toast t = Toast.makeText(this, "You won " + guess * 2 * getStreakBonus() + "!", Toast.LENGTH_SHORT);
+                    t.show();
+                    balance = balance + (guess * 2) * getStreakBonus();
+                    TextView txtbalance = findViewById(R.id.txtBalance);
+                    txtbalance.setText("" + balance);
+                    txtbalance.setBackgroundColor(Color.GREEN);
+                    vibrate();
+                }
+                FewResult result = new FewResult(this);
+                result.execute();
             }
-            FewResult result=new FewResult(this);
-            result.execute();
+        }catch(IllegalStateException e){
+
+        } catch(NumberFormatException e){
+
+        }catch(Exception e){
+
         }
     }
+
 
     private int getStreakBonus() {
         if(streak > 3) return streak*2;
